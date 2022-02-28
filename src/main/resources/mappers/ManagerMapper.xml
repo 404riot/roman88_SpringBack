@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roman.romanpalpal.Mapper.ManagerMapper">
+
+    <select id="membersAccount" resultType="com.roman.romanpalpal.Dto.AccountDTO">
+        SELECT
+            name,
+            id,
+            CAST(AES_DECRYPT(UNHEX(address), 'addressEnc') AS CHAR ) address,
+            CAST(AES_DECRYPT(UNHEX(postCode), 'postCodeEnc') AS CHAR) postCode,
+            CAST(AES_DECRYPT(UNHEX(phoneNumber), 'phoneNumberEnc') AS CHAR) phoneNumber,
+            email
+        FROM userAccount;
+    </select>
+
+    <insert id="addNotice" parameterType="String">
+        INSERT INTO notice (
+            title,
+            contents,
+            registerDate,
+            writer
+        ) VALUES (
+            #{title},
+            #{contents},
+            current_date,
+            #{writer}
+        );
+    </insert>
+
+    <select id="retrieveNotice" resultType="com.roman.romanpalpal.Dto.NoticeDTO" >
+        SELECT
+            seq,
+            title,
+            contents,
+            registerDate,
+            writer
+        FROM notice;
+    </select>
+
+    <delete id="removeNotice" parameterType="com.roman.romanpalpal.Dto.RemoveNoticeDTO">
+        DELETE FROM
+            notice
+        WHERE
+            seq = #{seq} AND writer = #{writer}
+    </delete>
+
+    <select id="retrieveQnA" resultType="com.roman.romanpalpal.Dto.QnAListDTO">
+        SELECT
+            seq,
+            id,
+            name,
+            title,
+            contents,
+            registerDate,
+            answer
+        FROM qnaList;
+    </select>
+
+    <update id="addAnswer" parameterType="com.roman.romanpalpal.Dto.QnAManageVO">
+        UPDATE
+            qnaList
+        SET
+            answer = #{input}
+        WHERE
+            id = #{id} AND seq = #{seq}
+    </update>
+
+    <update id="modifyAnswer" parameterType="com.roman.romanpalpal.Dto.QnAManageVO">
+        UPDATE
+            qnaList
+        SET
+            answer = #{input}
+        WHERE
+            id = #{id} AND seq = #{seq}
+    </update>
+
+    <insert id="addQuestion" parameterType="String" >
+        INSERT INTO qnaList (
+            id,
+            name,
+            title,
+            contents,
+            registerDate
+        ) VALUES (
+            #{id},
+            #{name},
+            #{questionTitle},
+            #{questionContent},
+            current_date
+        );
+    </insert>
+
+    <select id="getUsersMail" resultType="String">
+        SELECT email FROM userAccount;
+    </select>
+
+
+</mapper>

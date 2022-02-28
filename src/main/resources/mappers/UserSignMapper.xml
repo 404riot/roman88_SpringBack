@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roman.romanpalpal.Mapper.UserSignMapper">
+
+    <insert id="createAccount" parameterType="com.roman.romanpalpal.Dto.AccountDTO">
+        INSERT INTO userAccount(
+            name,
+            id,
+            pw,
+            address,
+            postCode,
+            phoneNumber,
+            email
+        ) VALUES (
+            #{name},
+            #{id},
+            (hex(aes_encrypt(#{pw}, 'passwordEnc'))),
+            (hex(aes_encrypt(#{address}, 'addressEnc'))),
+            (hex(aes_encrypt(#{postCode}, 'postCodeEnc'))),
+            (hex(aes_encrypt(#{phoneNumber}, 'phoneNumberEnc'))),
+            #{email}
+        )
+    </insert>
+
+    <select id="overlapCheck" parameterType="String" resultType="String">
+        SELECT id FROM userAccount WHERE id = #{id}
+    </select>
+
+    <select id="signAccount" parameterType="String" resultType="String">
+        SELECT
+            AES_DECRYPT(UNHEX(pw), 'passwordEnc')
+        FROM
+            userAccount
+        WHERE
+            id = #{signId}
+    </select>
+
+    <select id="getAccountInfo" parameterType="String" resultType="HashMap" >
+        SELECT
+            seq,
+            name,
+            id,
+            CAST(AES_DECRYPT(UNHEX(address), 'addressEnc') AS CHAR ),
+            CAST(AES_DECRYPT(UNHEX(postCode), 'postCodeEnc') AS CHAR),
+            CAST(AES_DECRYPT(UNHEX(phoneNumber), 'phoneNumberEnc') AS CHAR),
+            CAST(AES_DECRYPT(UNHEX(pw), 'passwordEnc') AS CHAR),
+            email,
+            auth
+        FROM
+            userAccount
+        WHERE
+            id = #{id}
+    </select>
+
+    <update id = "accountModify" parameterType="com.roman.romanpalpal.Dto.AccountDTO" >
+        UPDATE
+            userAccount
+        SET
+            name = #{name},
+            pw = (hex(aes_encrypt(#{pw}, 'passwordEnc'))),
+            address = (hex(aes_encrypt(#{address}, 'addressEnc'))),
+            postCode = (hex(aes_encrypt(#{postCode}, 'postCodeEnc'))),
+            phoneNumber = (hex(aes_encrypt(#{phoneNumber}, 'phoneNumberEnc'))),
+            email = #{email}
+        WHERE
+            id = #{id} AND seq = #{seq}
+
+    </update>
+
+</mapper>

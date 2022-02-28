@@ -1,0 +1,55 @@
+Using DataBase Mysql
+
+-------- account table
+CREATE TABLE userAccount(
+	seq int not null auto_increment primary key comment'seq',
+	name varchar(20) not null comment'이름',
+	id varchar(50) not null comment'아이디',
+	pw varchar(300) not null comment'비밀번호',
+	address varchar(500) not null comment'주소',
+	postCode varchar(100) not null comment'우편번호',
+	phoneNumber varchar(300) not null comment'전화번호',
+	email varchar(100) not null comment'이메일'
+);
+
+
+-------- user order cart table
+CREATE TABLE orderInCart (
+	modelSeq int not null auto_increment primary key comment'카트추가모고유번호',
+	id varchar(20) not null comment'주문자Id',
+	seq int not null comment'주문자seq',
+	orderColor varchar(20) not null comment'주문색상',
+	orderPsc int not null comment'주문수량',
+	orderSize varchar(20) not null comment'주문사이즈',
+	orderModelNo varchar(100) not null comment'주문모델번',
+	orderPrice int not null comment'주문금액',
+	orderModelName varchar(50) not null comment'주문모델이름',
+	orderModelPrice varchar(100) not null comment'주문모델가격'
+);
+
+
+-------- notice table
+CREATE TABLE notice (
+	seq int not null auto_increment primary key comment'seq',
+	title varchar(50) not null comment'title',
+	contents text not null comment'contents',
+	registerDate date not null comment'등록일',
+	writter varchar(20) not null comment'작성자'
+);
+
+-------- QnA table
+CREATE TABLE qnaList (
+	seq int not null auto_increment primary key comment'seq',
+	id varchar(30) not null comment'아이디',
+	name varchar(30) not null comment'이름',
+	title varchar(100) not null comment'제목',
+	contents text not null comment'내용',
+	answer text comment'답변',
+	pass varchar(30) not null comment'비밀번호',
+	registerDate Date not null comment'등록일'
+)
+
+
+
+
+

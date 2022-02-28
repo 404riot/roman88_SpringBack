@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roman.romanpalpal.Mapper.DressModelMapper">
+
+    <select id="getModelInfo" resultType="com.roman.romanpalpal.Dto.DressModelDTO">
+        SELECT
+            modelNo,
+            modelName,
+            modelPrice,
+            modelColor,
+            modelSize,
+            modelSizeSummary
+        FROM dressInfo
+    </select>
+
+    <insert id="addOrderInCart" parameterType="com.roman.romanpalpal.Dto.ProductOrderDTO">
+        INSERT INTO orderInCart (
+            id,
+            seq,
+            orderColor,
+            orderPsc,
+            orderSize,
+            orderModelNo,
+            orderPrice,
+            orderModelName,
+            orderModelPrice
+        ) VALUES (
+            #{id},
+            #{seq},
+            #{orderColor},
+            #{orderPsc},
+            #{orderSize},
+            #{orderModelNo},
+            #{orderPrice},
+            #{orderModelName},
+            #{orderModelPrice}
+        )
+    </insert>
+
+    <select id="getOrderInCart" parameterType="String" resultType="com.roman.romanpalpal.Dto.ProductOrderDTO">
+        SELECT
+            modelSeq,
+            orderColor,
+            orderPsc,
+            orderSize,
+            orderModelNo,
+            orderPrice,
+            orderModelName,
+            orderModelPrice
+        FROM orderInCart WHERE id = #{id} AND seq = #{seq}
+    </select>
+
+    <delete id="removeSelectedTable" parameterType="com.roman.romanpalpal.Dto.RemoveTableDTO">
+        DELETE FROM
+              orderInCart
+        WHERE
+              id = #{id} and
+              seq = #{userSeq} and
+              modelSeq = #{modelSeq}
+    </delete>
+
+</mapper>
