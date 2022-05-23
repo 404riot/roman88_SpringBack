@@ -12,6 +12,7 @@ CREATE TABLE userAccount(
 	email varchar(100) not null comment'이메일'
 );
 
+omitted
 
 -------- user order cart table
 CREATE TABLE orderInCart (
